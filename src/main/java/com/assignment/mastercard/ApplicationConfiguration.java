@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ApplicationConfiguration {
+	//REST API which listens to the below url with 2 request parameters namely origin and destination
 	@RequestMapping("/connected")
 	public String hello(@RequestParam("origin") String origin, @RequestParam("destination") String destination) {
 
@@ -27,8 +28,10 @@ public class ApplicationConfiguration {
 			while (scan.hasNextLine()) {
 				String line = scan.nextLine();
 				String[] tokens = line.split(",");
+				//If the origin-destination is a pair in the file, return true as there is a direct connection between these two cities
 				if (tokens[0].equalsIgnoreCase(origin) && tokens[1].equalsIgnoreCase(destination))
 					return "Yes";
+				//If the destination-origin is a pair in the file, return true as there is a direct connection between these two cities
 				if (tokens[0].equalsIgnoreCase(destination) && tokens[1].equalsIgnoreCase(origin))
 					return "Yes";
 				citiesMap.put(tokens[0], tokens[1]);
@@ -41,6 +44,7 @@ public class ApplicationConfiguration {
 		return getConnection(citiesMap, origin, destination);
 	}
 
+	//Checking for indirect connection between origin-destination from the file
 	private String getConnection(Map<String, String> citiesMap, String origin, String destination) {
 
 		String str = citiesMap.get(origin);
